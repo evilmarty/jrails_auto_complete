@@ -1,3 +1,2 @@
-require 'jrails_auto_complete'
-
-ActionController::Base.send(:extend, Jrails::ActionController)
+ActionController::Base.send :include, JrailsAutoComplete
+ActionController::Base.helper JrailsAutoCompleteMacroHelper
