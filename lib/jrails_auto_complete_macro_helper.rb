@@ -40,12 +40,18 @@ module JrailsAutoCompleteMacroHelper
   end
 
   def auto_complete_for(object, method, options = {})
+    if (options[:index])
+      tag_name = "#{object}_#{options[:index]}_#{method}"
+    else
+      tag_name = "#{object}_#{method}"
+    end
     (options[:skip_style] ? '' : auto_complete_stylesheet) +
-    content_tag('div', '', :id => "#{object}_#{method}_auto_complete", :class => 'auto_complete') +
-    auto_complete_field("#{object}_#{method}", { :url => { :action => "auto_complete_for_#{object}_#{method}" } }.update(options))
+    content_tag('div', '', :id => "#{tag_name}_auto_complete", :class => 'auto_complete') +
+    auto_complete_field(tag_name, { :url => { :action => "auto_complete_for_#{object}_#{method}" } }.update(options))
   end
 
   def text_field_with_auto_complete(object, method, tag_options = {}, completion_options = {})
+    completion_options[:index] = tag_options[:index] if tag_options.has_key? :index
     text_field(object, method, tag_options) +
     auto_complete_for(object, method, completion_options)
   end
